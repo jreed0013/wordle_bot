@@ -131,14 +131,57 @@ class Game:
             
             if green_count == 5:
                 print(f"Puzzle solved in {guess_count} guesses")
-                return
+                return guess_count
             else:
                 self.check_lists_for_duplicates()
                 self.update_possible_list()
             guess_count += 1
         print(f"Wordle bot failed to solve for {answer}")
-        return
+        return guess_count
 
+def efficiency_test():
+    game = Game()
+    total_score = 0
+    success_count = 0
+    ones_count = 0
+    twos_count = 0
+    threes_count = 0
+    fours_count = 0
+    fives_count = 0
+    sixes_count = 0
+    failed_words = []
+    for word in game.all_words:
+        individual_game = Game()
+        game_score = individual_game.play(word.string)
+        if game_score == 1:
+            ones_count += 1
+        if game_score == 2:
+            twos_count += 1
+        if game_score == 3:
+            threes_count += 1
+        if game_score == 4:
+            fours_count += 1
+        if game_score == 5:
+            fives_count += 1
+        if game_score == 6:
+            sixes_count += 1
+        if game_score == 7:
+            failed_words.append(word.string)
+        else:
+            success_count += 1
+            total_score += game_score
+    average_solve = total_score / (len(game.all_words) - len(failed_words))
+    print(f"Average number of guesses: {average_solve}")
+    print(f"Number of words solved in one guess: {ones_count}")
+    print(f"Number of words solved in two guesses: {twos_count}")
+    print(f"Number of words solved in three guesses: {threes_count}")
+    print(f"Number of words solved in four guesses: {fours_count}")
+    print(f"Number of words solved in five guesses: {fives_count}")
+    print(f"Number of words solved in six guesses: {sixes_count}")
+    print(f"Number of failed words: {len(failed_words)}")
+    print(f"Failed words: {failed_words}")
+    
+        
                 
 def main():
     answer = input("Wordle Answer: ")
